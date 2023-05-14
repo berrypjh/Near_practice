@@ -1,6 +1,8 @@
 import React from "react";
+import { initContract } from "./near/utill";
 
 function App() {
+  initContract();
   return (
     <div className="App">
       <header className="App-header">

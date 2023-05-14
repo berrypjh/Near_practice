@@ -4,6 +4,7 @@ const path = require("path");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const { ProvidePlugin } = require("webpack");
 
 module.exports = {
   devtool: "cheap-module-source-map",
@@ -19,6 +20,12 @@ module.exports = {
     new ForkTsCheckerWebpackPlugin(),
     new CopyWebpackPlugin({
       patterns: [{ from: "public/logo.png" }],
+    }),
+    new ProvidePlugin({
+      Buffer: ["buffer", "Buffer"],
+    }),
+    new ProvidePlugin({
+      process: "process/browser",
     }),
   ],
   devServer: {
@@ -65,6 +72,19 @@ module.exports = {
     extensions: [".ts", ".tsx", ".jsx", ".js"],
     alias: {
       src: path.resolve(__dirname, "src/"),
+    },
+    fallback: {
+      crypto: require.resolve("crypto-browserify"),
+      stream: require.resolve("stream-browserify"),
+      assert: require.resolve("assert"),
+      http: require.resolve("stream-http"),
+      https: require.resolve("https-browserify"),
+      os: require.resolve("os-browserify"),
+      url: require.resolve("url"),
+      path: require.resolve("path-browserify"),
+      util: false,
+      fs: false,
+      net: false,
     },
   },
 };
